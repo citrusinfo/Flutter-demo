@@ -26,8 +26,8 @@ class _LoginPageState extends State<LoginPage> {
 
   void validateAndSubmit() async {
     FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: 'abc@efg.com'/*myEmailController.text*/,
-        password: '123456'/*myPasswordController.text*/
+        email: myEmailController.text,
+        password: myPasswordController.text
     ).then((FirebaseUser user) {
       print(user);
       Navigator.pushReplacementNamed(_context, "/home");

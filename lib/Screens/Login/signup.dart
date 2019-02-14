@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../Widgets/common_dialogs.dart';
+import 'package:email_validator/email_validator.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -11,6 +12,7 @@ class _SignupPageState extends State<SignupPage> {
 
   final mySignupPasswordController = TextEditingController();
   final mySignupEmailController = TextEditingController();
+  final mySignupConfirmController = TextEditingController();
 
   BuildContext _context;
 
@@ -23,6 +25,32 @@ class _SignupPageState extends State<SignupPage> {
         child: loginBody(),
       ),
     );
+  }
+
+  void checkPasswordMatch() {
+    var email = mySignupEmailController.text;
+    bool emailValid  = EmailValidator.validate(email);
+
+    if (mySignupEmailController.text == "") {
+      showAlertDialog(_context, 'Signup Error', "An email address must be provided.");
+    }
+    else if (!emailValid) {
+      showAlertDialog(_context, 'Signup Error', "Please enter a valid email.");
+    }
+    else if (mySignupPasswordController.text == "" || mySignupConfirmController.text == "") {
+      showAlertDialog(_context, 'Password Error', "Passwords can't be empty");
+    }
+    else if (mySignupPasswordController.text.length < 6 || mySignupConfirmController.text.length < 6) {
+      showAlertDialog(_context, 'Password Error', "Passwords should be atleast 6 characters");
+    }
+    else if (mySignupPasswordController.text != mySignupConfirmController.text) {
+      print("passwords mismatch");
+      showAlertDialog(_context, 'Password Error', "Passwords doesn't match");
+    }
+    else {
+    print("passwords match");
+    createAccount();
+    }
   }
 
   void createAccount() async {
@@ -61,7 +89,7 @@ class _SignupPageState extends State<SignupPage> {
         height: 5.0,
       ),
       Text(
-        "Please enter an email and password to create account",
+        "Set up your Flutter Demo account",
         style: TextStyle(color: Colors.black),
       ),
     ],
@@ -73,7 +101,7 @@ class _SignupPageState extends State<SignupPage> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Container(
-          padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
+          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
           child: TextField(
             controller: mySignupEmailController,
             maxLines: 1,
@@ -85,15 +113,28 @@ class _SignupPageState extends State<SignupPage> {
           ),
         ),
         Container(
-          padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
           child: TextField(
             controller: mySignupPasswordController,
             maxLines: 1,
             obscureText: true,
             //validator: (value) => value.isEmpty ? 'Password can\'t be empty':null,
             decoration: InputDecoration(
-              hintText: "Enter your password",
+              hintText: "Minimum of 6 characters",
               labelText: "Password",
+            ),
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
+          child: TextField(
+            controller: mySignupConfirmController,
+            maxLines: 1,
+            obscureText: true,
+            //validator: (value) => value.isEmpty ? 'Password can\'t be empty':null,
+            decoration: InputDecoration(
+              hintText: "Enter same password",
+              labelText: "Confirm Password",
             ),
           ),
         ),
@@ -111,7 +152,7 @@ class _SignupPageState extends State<SignupPage> {
               style: TextStyle(color: Colors.white),
             ),
             color: Colors.green,
-            onPressed: createAccount,
+            onPressed: checkPasswordMatch,
           ),
         ),
         SizedBox(
