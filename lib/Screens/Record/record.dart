@@ -34,7 +34,7 @@ class _RecordAudioState extends State<RecordAudio> {
 
   void startRecorder() async {
     try {
-      var root = await getExternalStorageDirectory();
+      var root = await getApplicationDocumentsDirectory();
       int id = new DateTime.now().millisecondsSinceEpoch;
       var myDir = new Directory(root.path + '/flutterdemo/Recordings');
       try{

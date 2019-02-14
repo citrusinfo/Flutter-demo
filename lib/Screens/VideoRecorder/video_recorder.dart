@@ -263,9 +263,11 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
       return null;
     }
 
-    final Directory extDir = await getExternalStorageDirectory();
+    final Directory extDir = await getApplicationDocumentsDirectory();
     final String dirPath = '${extDir.path}/flutterdemo/Recordings';
+
     await Directory(dirPath).create(recursive: true);
+
     final String filePath = '$dirPath/flutterdemo_video${timestamp()}.mp4';
 
     if (controller.value.isRecordingVideo) {

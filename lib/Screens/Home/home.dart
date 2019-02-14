@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_demo/Screens/Record/record.dart';
 import 'package:flutter_demo/Screens/VideoRecorder/video_player.dart';
 import 'package:flutter_demo/Screens/VideoRecorder/video_recorder.dart';
 import 'package:path_provider/path_provider.dart';
@@ -20,7 +21,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-
     void bottomSheet() {
       showModalBottomSheet<void>(
           context: context,
@@ -32,21 +32,30 @@ class _HomeScreenState extends State<HomeScreen> {
                   leading: new Icon(Icons.music_note),
                   title: new Text('Audio'),
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, '/record');
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => RecordAudio()));
                   },
                 ),
                 new ListTile(
                   leading: new Icon(Icons.videocam),
                   title: new Text('Video'),
-                  onTap: ()  {
-                Navigator.push(context, MaterialPageRoute(builder:
-                       (BuildContext context) => CameraApp()));
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => CameraApp()));
                   },
                 ),
                 new ListTile(
                   leading: new Icon(Icons.cancel),
                   title: new Text('Cancel'),
-                  onTap: () {Navigator.pop(context);},
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
                 ),
               ],
             );
@@ -89,19 +98,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     print(basename(File(snapshot.data[index]).path));
                     return ListTile(
                       leading: basename(File(snapshot.data[index]).path)
-                          .contains("audio")
+                              .contains("audio")
                           ? Icon(Icons.audiotrack)
                           : Icon(Icons.videocam),
                       title: Text(basename(File(snapshot.data[index]).path)),
-                      onTap: (){
+                      onTap: () {
                         String uri = File(snapshot.data[index]).path.toString();
-                        if( basename(File(snapshot.data[index]).path)
+                        if (basename(File(snapshot.data[index]).path)
                             .contains("audio")) {
-                          Navigator.push(context, MaterialPageRoute(builder:
-                              (BuildContext context) => PlayAudio(path: uri)));
-                        } else{
-                          Navigator.push(context, MaterialPageRoute(builder:
-                              (BuildContext context) => VideoApp(File(snapshot.data[index]))));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      PlayAudio(path: uri)));
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      VideoApp(File(snapshot.data[index]))));
                         }
                       },
                     );
@@ -122,11 +137,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future getFiles() async {
-    var root = await getExternalStorageDirectory();
-    print("Path==="+root.path);
+    var root = await getApplicationDocumentsDirectory();
+    print("Path===" + root.path);
     List<String> files =
-    await FileManager(root: root.path + "/flutterdemo").filesTree();
+        await FileManager(root: root.path + "/flutterdemo").filesTree();
     return files.reversed.toList(); // For to show latest files first
   }
-
 }
