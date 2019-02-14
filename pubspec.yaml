@@ -21,6 +21,8 @@ dependencies:
   path_provider: 0.4.1
   intl: 0.15.7
   flutter_file_manager: 0.0.4
+  camera: 0.3.0+3
+  video_player: 0.10.0+2
 
 
   # The following adds the Cupertino Icons font to your application.
