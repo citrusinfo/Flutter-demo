@@ -1,18 +1,43 @@
 # Flutter Demo Application
 
-This project contains a demo application using Flutter. To run this project,
-use `flutter run` inside that project directory. See the [getting started
-guide](https://flutter.io/getting-started/) to install the `flutter` tool.
+This project contains a Flutter demo application. To run this project,
 
-## This demo app include:
+use `flutter run` inside the project directory. 
+
+To Install `flutter` tool, see the [getting started
+
+guide](https://flutter.io/getting-started/) .
+
+ 
+
+## This demo app includes:
+
+ 
 
 * Firebase Integration
-* Sign up - Simple sign up which will create user in firebase
-* Sign in - Authenticate user which is available in the firebase.
+
+* Sign up – A simple sign up which will create an user in firebase
+
+* Sign in - Authenticate an existing firebase user
+
 * Audio recording
+
 * Audio playing.
+
 * Video recording.
+
+ 
 
 ## Notes
 
-We have plan to add filter option in audio/video, that will do later.
+ 
+
+To enable firebase authentication:
+
+* For Android - Add google-services.json file to android/app folder 
+
+* For ios -  Add GoogleService-info.plist file to ios/Runner 
+
+
+We have tested the app only in android.
+
