@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 
 class RecordAudio extends StatefulWidget {
@@ -44,23 +45,21 @@ class _RecordAudioState extends State<RecordAudio> {
         flutterSound.startRecorder(null);
         flutterSound.stopRecorder();
       }
-
-
-
       String uri = root.path +
-          "/flutterdemo/Recordings/flutterdemo_" +
+          "/flutterdemo/Recordings/flutterdemo_audio" +
           id.toString() +
           ".mp4";
       print(uri);
       String path = await flutterSound.startRecorder(uri);
       print(': $path');
       _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
+        initializeDateFormatting();
         DateTime date =
-            new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
-        String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
+            new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt(),isUtc: true);
+        String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
 
         this.setState(() {
-          this._recorderTxt = txt.substring(3, 8);
+          this._recorderTxt = txt.substring(0, 8);
         });
       });
       _dbPeakSubscription =
